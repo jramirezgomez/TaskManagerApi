@@ -7,9 +7,13 @@ const taskSchema = new mongoose.Schema({
         required: false,
         trim: true
     },
-    completed: {
-        type: Boolean,
-        default: false
+    // completed: {
+    //     type: Boolean,
+    //     default: false
+    // },
+    status: {
+        type: String
+        , enum: ['in process', 'pause', 'completed']
     },
     duration: {
         type: Number,
@@ -26,6 +30,19 @@ const taskSchema = new mongoose.Schema({
     }
 },{
     timestamps: true
+})
+
+
+// Hash the plain text password before saving
+taskSchema.pre('save', async function (next) {
+    const task = this
+
+    if (task.isModified('status')) {
+        //user.password = await bcrypt.hash(user.password, 8)
+        console.log('test')
+    }
+
+    next()
 })
 
 const Task = mongoose.model('Task', taskSchema)
